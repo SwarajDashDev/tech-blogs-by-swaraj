@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrapper {
+  max-width: 760px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  line-height: 1.7;
+  color: #111827;
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.tags {
+  margin-bottom: 32px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-top: 36px;
+  font-size: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 18px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  color: #374151;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+}
+
+hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer strong {
+  color: #111827;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- Title -->
+  <h1>Monorepo with Yarn Workspaces for Shared React Native UI</h1>
+
+  <!-- Meta -->
+  <div class="meta">
+    📅 2026-07-14
+  </div>
+
+  <!-- Description -->
+  <div class="description">
+    Learn how Yarn Workspaces let you keep a single repository for native and web UI components, reducing duplication and easing maintenance.
+  </div>
+
+  <!-- Tags -->
+  <div class="tags">
+    <span class="tag">monorepo</span>
+    <span class="tag">yarn</span>
+    <span class="tag">react native</span>
+    <!-- <span class="tag">typescript</span> -->
+  </div>
+
+  <!-- Blog Content (HTML) -->
+  <h2 id="insight">Insight</h2>
+<p>A monorepo backed by Yarn Workspaces lets you house a shared UI library alongside your iOS, Android, and Expo projects. Because all packages resolve from the same <code>node_modules</code> tree, you avoid version drift and can import the same TypeScript components without extra bundling steps. This pattern also enables atomic releases: bump the UI package version once and every app instantly gets the update.</p>
+<h2 id="example">Example</h2>
+<pre><code class="json language-json">// root package.json
+{
+  "private": true,
+  "workspaces": ["packages/*", "apps/*"]
+}
+</code></pre>
+<pre><code class="tsx language-tsx">// packages/ui/Button.tsx
+export const Button = ({title, onPress}: {title:string; onPress:()=&gt;void}) =&gt; (
+  &lt;TouchableOpacity onPress={onPress} style={styles.btn}&gt;
+    &lt;Text&gt;{title}&lt;/Text&gt;
+  &lt;/TouchableOpacity&gt;
+);
+</code></pre>
+<pre><code class="tsx language-tsx">// apps/mobile/App.tsx
+import {Button} from "@myorg/ui";
+
+export default function App() {
+  return &lt;Button title="Tap me" onPress={() =&gt; console.log('pressed')} /&gt;;
+}
+</code></pre>
+<h2 id="takeaway">Takeaway</h2>
+<p>Keep UI code in a dedicated workspace (e.g., <code>packages/ui</code>) and reference it with a scoped import. When you add a new component, it instantly becomes available to all apps, cutting down on copy‑paste bugs and keeping your design system consistent.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="signature">
+      <strong>Swaraj Dash</strong><br>
+      Distributed Systems & Software Engineering<br><br>
+      📱 <a href="https://wa.me/919337287692?text=Hi%20Swaraj%2C%20I%20read%20your%20blog%20and%20wanted%20to%20connect." target="_blank">
+        Message on WhatsApp
+      </a><br>
+      📧 <a href="mailto:dashswaraj02@gmail.com">
+        dashswaraj02@gmail.com
+      </a><br>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
