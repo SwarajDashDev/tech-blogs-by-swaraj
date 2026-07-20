@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrapper {
+  max-width: 760px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  line-height: 1.7;
+  color: #111827;
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.tags {
+  margin-bottom: 32px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-top: 36px;
+  font-size: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 18px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  color: #374151;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+}
+
+hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer strong {
+  color: #111827;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- Title -->
+  <h1>Branded Types: Safer IDs in React Native with TypeScript</h1>
+
+  <!-- Meta -->
+  <div class="meta">
+    📅 2026-07-20
+  </div>
+
+  <!-- Description -->
+  <div class="description">
+    Leverage TypeScript's branded types to prevent accidental ID mix‑ups across entities, improving runtime safety without extra libraries.
+  </div>
+
+  <!-- Tags -->
+  <div class="tags">
+    <span class="tag">typescript</span>
+    <span class="tag">react-native</span>
+    <span class="tag">type safety</span>
+    <!-- <span class="tag">undefined</span> -->
+  </div>
+
+  <!-- Blog Content (HTML) -->
+  <h2 id="insight">Insight</h2>
+<p>In many mobile apps, you’ll pass around opaque identifiers—<code>userId</code>, <code>orderId</code>, <code>productId</code>—all typed as <code>string</code>. A simple typo can silently send the wrong ID to an API, causing hard‑to‑debug bugs. TypeScript’s <em>branded types</em> let you create distinct compile‑time types from the same primitive, catching swaps at development time while keeping runtime overhead zero.</p>
+<h2 id="example">Example</h2>
+<pre><code class="ts language-ts">// Define a brand helper
+type Brand&lt;K, T&gt; = K &amp; { __brand: T };
+
+// Create distinct ID types
+type UserId = Brand&lt;string, "UserId"&gt;;
+type OrderId = Brand&lt;string, "OrderId"&gt;;
+
+// Helper to cast safely
+const toUserId = (id: string): UserId =&gt; id as UserId;
+const toOrderId = (id: string): OrderId =&gt; id as OrderId;
+
+// Usage – TypeScript will error if you mix them up
+function fetchUserOrders(userId: UserId) { /* ... */ }
+
+const uid = toUserId('u-123');
+const oid = toOrderId('o-456');
+
+fetchUserOrders(uid); // ✅ OK
+// fetchUserOrders(oid); // ❌ Type error
+</code></pre>
+<h2 id="takeaway">Takeaway</h2>
+<p>Adopt branded IDs for any opaque string/number identifier. It adds virtually no bundle size, requires only a couple of type helpers, and gives you compile‑time guarantees that you’re never sending the wrong ID to a backend.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="signature">
+      <strong>Swaraj Dash</strong><br>
+      Distributed Systems & Software Engineering<br><br>
+      📱 <a href="https://wa.me/919337287692?text=Hi%20Swaraj%2C%20I%20read%20your%20blog%20and%20wanted%20to%20connect." target="_blank">
+        Message on WhatsApp
+      </a><br>
+      📧 <a href="mailto:dashswaraj02@gmail.com">
+        dashswaraj02@gmail.com
+      </a><br>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
