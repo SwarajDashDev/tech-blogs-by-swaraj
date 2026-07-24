@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrapper {
+  max-width: 760px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  line-height: 1.7;
+  color: #111827;
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.tags {
+  margin-bottom: 32px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-top: 36px;
+  font-size: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 18px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  color: #374151;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+}
+
+hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer strong {
+  color: #111827;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- Title -->
+  <h1>Extend Native Modules in Expo with Config Plugins (No Eject Needed)</h1>
+
+  <!-- Meta -->
+  <div class="meta">
+    📅 2026-07-24
+  </div>
+
+  <!-- Description -->
+  <div class="description">
+    Learn how to add custom native code to an Expo-managed app using config plugins, avoiding the heavy‑weight eject process.
+  </div>
+
+  <!-- Tags -->
+  <div class="tags">
+    <span class="tag">expo</span>
+    <span class="tag">config-plugins</span>
+    <span class="tag">react-native</span>
+    <!-- <span class="tag">native-modules</span> -->
+  </div>
+
+  <!-- Blog Content (HTML) -->
+  <h2 id="insight">Insight</h2>
+<p>Many developers assume that adding a native library to an Expo project forces a full eject to the bare workflow. Since Expo SDK 48, config plugins let you inject native changes at build time while staying in the managed workflow. The plugin runs during <code>eas build</code> (or <code>expo prebuild</code>) and modifies the generated Android and iOS projects, so you get the same capabilities as a bare app without the maintenance overhead.</p>
+<h2 id="example">Example</h2>
+<pre><code class="ts language-ts">// plugins/withCustomFont.ts
+import { ConfigPlugin, AndroidConfig, IOSConfig } from '@expo/config-plugins';
+
+const withCustomFont: ConfigPlugin = (config) =&gt; {
+  // Android: add a font asset to app/src/main/assets/fonts
+  config = AndroidConfig.Paths.withGradleProperties(config, (props) =&gt; {
+    props['android.enableAapt2'] = true;
+    return props;
+  });
+  // iOS: add a font to Info.plist
+  config = IOSConfig.Fonts.addFont(config, {
+    path: './assets/fonts/Inter-Regular.ttf',
+    name: 'Inter-Regular',
+  });
+  return config;
+};
+export default withCustomFont;
+</code></pre>
+<p>Add the plugin to <code>app.json</code>:</p>
+<pre><code class="json language-json">{
+  "expo": {
+    "plugins": ["./plugins/withCustomFont"]
+  }
+}
+</code></pre>
+<h2 id="takeaway">Takeaway</h2>
+<p>Use a tiny config‑plugin to hook into the native project generation step. This keeps your workflow lightweight, lets you version‑control native tweaks, and avoids the pain of a full eject.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="signature">
+      <strong>Swaraj Dash</strong><br>
+      Distributed Systems & Software Engineering<br><br>
+      📱 <a href="https://wa.me/919337287692?text=Hi%20Swaraj%2C%20I%20read%20your%20blog%20and%20wanted%20to%20connect." target="_blank">
+        Message on WhatsApp
+      </a><br>
+      📧 <a href="mailto:dashswaraj02@gmail.com">
+        dashswaraj02@gmail.com
+      </a><br>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
