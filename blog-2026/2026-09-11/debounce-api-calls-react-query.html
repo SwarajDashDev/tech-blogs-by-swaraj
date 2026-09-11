@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrapper {
+  max-width: 760px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  line-height: 1.7;
+  color: #111827;
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.tags {
+  margin-bottom: 32px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-top: 36px;
+  font-size: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 18px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  color: #374151;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+}
+
+hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer strong {
+  color: #111827;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- Title -->
+  <h1>Debounce API Calls in React Native with React Query and a useDebounce Hook</h1>
+
+  <!-- Meta -->
+  <div class="meta">
+    📅 2026-09-11
+  </div>
+
+  <!-- Description -->
+  <div class="description">
+    Learn how to prevent excessive network traffic by debouncing user input before triggering React Query fetches in a React Native app.
+  </div>
+
+  <!-- Tags -->
+  <div class="tags">
+    <span class="tag">react query</span>
+    <span class="tag">debounce</span>
+    <span class="tag">react native</span>
+    <!-- <span class="tag">typescript</span> -->
+  </div>
+
+  <!-- Blog Content (HTML) -->
+  <h2 id="insight">Insight</h2>
+<p>When building search or type‑ahead features in React Native, each keystroke can fire a new network request, quickly overwhelming your backend and draining battery. Combining a lightweight <code>useDebounce</code> hook with React Query’s <code>enabled</code> flag lets you wait for a pause in user input before issuing the request, keeping the UI responsive and the API load low.</p>
+<h2 id="example">Example</h2>
+<pre><code class="tsx language-tsx">import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { TextInput, FlatList, Text } from "react-native";
+
+function useDebounce&lt;T&gt;(value: T, delay = 300): T {
+  const [debounced, setDebounced] = useState(value);
+  useEffect(() =&gt; {
+    const id = setTimeout(() =&gt; setDebounced(value), delay);
+    return () =&gt; clearTimeout(id);
+  }, [value, delay]);
+  return debounced;
+}
+
+export default function SearchScreen() {
+  const [query, setQuery] = useState("");
+  const debouncedQuery = useDebounce(query);
+
+  const { data, isLoading } = useQuery(
+    ["search", debouncedQuery],
+    () =&gt; fetch(`https://api.example.com/search?q=${debouncedQuery}`).then(r =&gt; r.json()),
+    { enabled: !!debouncedQuery }
+  );
+
+  return (
+    &lt;&gt;
+      &lt;TextInput placeholder="Search..." value={query} onChangeText={setQuery} /&gt;
+      {isLoading ? &lt;Text&gt;Loading...&lt;/Text&gt; : &lt;FlatList data={data} renderItem={({item}) =&gt; &lt;Text&gt;{item.name}&lt;/Text&gt;} /&gt;}
+    &lt;/&gt;
+  );
+}
+</code></pre>
+<h2 id="takeaway">Takeaway</h2>
+<p>Wrap the user‑controlled value in a debounce hook and feed the debounced result to React Query. The <code>enabled</code> option guarantees the fetch runs only after the pause, dramatically cutting down unnecessary calls while preserving a smooth typing experience.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="signature">
+      <strong>Swaraj Dash</strong><br>
+      Distributed Systems & Software Engineering<br><br>
+      📱 <a href="https://wa.me/919337287692?text=Hi%20Swaraj%2C%20I%20read%20your%20blog%20and%20wanted%20to%20connect." target="_blank">
+        Message on WhatsApp
+      </a><br>
+      📧 <a href="mailto:dashswaraj02@gmail.com">
+        dashswaraj02@gmail.com
+      </a><br>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
