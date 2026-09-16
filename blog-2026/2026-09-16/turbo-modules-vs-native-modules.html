@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f6f8fa;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.wrapper {
+  max-width: 760px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 48px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  line-height: 1.7;
+  color: #111827;
+}
+
+h1 {
+  font-size: 34px;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.meta {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-size: 18px;
+  color: #374151;
+  margin-bottom: 28px;
+}
+
+.tags {
+  margin-bottom: 32px;
+}
+
+.tag {
+  display: inline-block;
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+h2 {
+  margin-top: 36px;
+  font-size: 24px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+}
+
+h3 {
+  margin-top: 28px;
+  font-size: 18px;
+}
+
+p {
+  margin: 16px 0;
+}
+
+code {
+  background: #f3f4f6;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+}
+
+pre {
+  background: #0f172a;
+  color: #f8fafc;
+  padding: 18px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  color: inherit;
+}
+
+blockquote {
+  border-left: 4px solid #2563eb;
+  padding-left: 16px;
+  color: #374151;
+  margin: 20px 0;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 24px 0;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+th {
+  background: #f9fafb;
+}
+
+hr {
+  margin: 48px 0;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+}
+
+.footer {
+  margin-top: 60px;
+  padding-top: 24px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.footer strong {
+  color: #111827;
+}
+
+.footer a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.signature {
+  margin-top: 8px;
+  line-height: 1.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <!-- Title -->
+  <h1>TurboModules vs Native Modules: Picking the Right Bridge for Performance</h1>
+
+  <!-- Meta -->
+  <div class="meta">
+    📅 2026-09-16
+  </div>
+
+  <!-- Description -->
+  <div class="description">
+    Understand when to use React Native TurboModules instead of classic Native Modules and how they impact startup time and runtime performance.
+  </div>
+
+  <!-- Tags -->
+  <div class="tags">
+    <span class="tag">react native</span>
+    <span class="tag">performance</span>
+    <span class="tag">native modules</span>
+    <!-- <span class="tag">turbo modules</span> -->
+  </div>
+
+  <!-- Blog Content (HTML) -->
+  <h2 id="insight">Insight</h2>
+<p>TurboModules are the next‑generation bridge introduced in RN 0.71. Unlike classic Native Modules, they are lazily loaded and communicate with JavaScript via JSI, eliminating the costly JSON serialization step. This reduces app startup time and enables near‑native call latency, especially for frequently used APIs like sensor data or cryptography. However, TurboModules require a C++‑backed implementation and are only supported on iOS 15+ and Android API 21+. For simple, infrequently used native code, classic Native Modules remain the pragmatic choice because they need only Java/Kotlin or Objective‑C/Swift and work across all OS versions.</p>
+<h2 id="example">Example</h2>
+<pre><code class="tsx language-tsx">// src/native/DeviceInfoTurbo.ts
+import {TurboModuleRegistry} from 'react-native';
+const DeviceInfo = TurboModuleRegistry.getEnforcing('DeviceInfo');
+export const getBatteryLevel = async () =&gt; {
+  const level = await DeviceInfo.getBatteryLevel();
+  return level;
+};
+</code></pre>
+<p>The same API as a classic module would look like <code>NativeModules.DeviceInfo.getBatteryLevel()</code> with a promise wrapper.</p>
+<h2 id="takeaway">Takeaway</h2>
+<p>Start new native bridges as TurboModules only when the API is performance‑critical or called often. Keep legacy or low‑frequency code in classic Native Modules to avoid extra build complexity and maintain broader device compatibility.</p>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="signature">
+      <strong>Swaraj Dash</strong><br>
+      Distributed Systems & Software Engineering<br><br>
+      📱 <a href="https://wa.me/919337287692?text=Hi%20Swaraj%2C%20I%20read%20your%20blog%20and%20wanted%20to%20connect." target="_blank">
+        Message on WhatsApp
+      </a><br>
+      📧 <a href="mailto:dashswaraj02@gmail.com">
+        dashswaraj02@gmail.com
+      </a><br>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
